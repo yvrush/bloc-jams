@@ -45,7 +45,7 @@ body.album {
 .album-view-song-item {
     height: 3rem;
     /* #1 */
-    border-bottom: 1px solid rgba(255,255,255,0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .song-item-number {
@@ -64,13 +64,14 @@ body.album {
     .album-view-details {
         text-align: center;
     }
-
     .album-view-title {
-        margin-top: 0;   
+        margin-top: 0;
     }
 }
 
+
 /* #3 */
+
 @media (max-width: 1024px) and (min-width: 320px) {
     .album-view-song-list {
         position: relative;
