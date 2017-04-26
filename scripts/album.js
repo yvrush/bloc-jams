@@ -62,77 +62,95 @@ var albumMarconi = {
 };
 
 var albumMozart = {
-        title: '32Masterpieces',
-        artist: 'Mozart',
-        label: 'Classic',
-        year: '2007',
-        albumArtUrl: 'assets/images/album_covers/03.png',
-        songs: [
-            {
-                title: 'Serenade in G',
-                duration: '4:26'
+    title: '32Masterpieces',
+    artist: 'Mozart',
+    label: 'Classic',
+    year: '2007',
+    albumArtUrl: 'assets/images/album_covers/03.png',
+    songs: [
+        {
+            title: 'Serenade in G',
+            duration: '4:26'
         },
-            {
-                title: 'Piano concerto',
-                duration: '3:14'
+        {
+            title: 'Piano concerto',
+            duration: '3:14'
         },
-            {
-                title: 'Clarinet quintet',
-                duration: '5:01'
+        {
+            title: 'Clarinet quintet',
+            duration: '5:01'
         },
-            {
-                title: 'Vesperae solennes',
-                duration: '3:21'
+        {
+            title: 'Vesperae solennes',
+            duration: '3:21'
         },
-            {
-                title: 'Le noxxr di figaro',
-                duration: '2:15'}
+        {
+            title: 'Le noxxr di figaro',
+            duration: '2:15'
+        }
             ]
-        };
+};
 
-        var createSongRow = function (songNumber, songName, songLength) {
-            var template =
-                '<tr class="album-view-song-item">' +
-                '  <td class="song-item-number">' + songNumber + '</td>' +
-                '  <td class="song-item-title">' + songName + '</td>' +
-                '  <td class="song-item-duration">' + songLength + '</td>' +
-                '</tr>';
+var createSongRow = function (songNumber, songName, songLength) {
+    var template =
+        '<tr class="album-view-song-item">' +
+        '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'+
+        '  <td class="song-item-title">' + songName + '</td>' +
+        '  <td class="song-item-duration">' + songLength + '</td>' +
+        '</tr>';
 
-            return template;
-        };
+    return template;
+};
 
-        var albumTitle = document.getElementsByClassName('album-view-title')[0];
-        var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-        var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-        var albumImage = document.getElementsByClassName('album-cover-art')[0];
-        var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+var albumTitle = document.getElementsByClassName('album-view-title')[0];
+var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+var albumImage = document.getElementsByClassName('album-cover-art')[0];
+var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
 
-        var setCurrentAlbum = function (album) {
+var setCurrentAlbum = function (album) {
 
-            albumTitle.firstChild.nodeValue = album.title;
-            albumArtist.firstChild.nodeValue = album.artist;
-            albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
-            albumImage.setAttribute('src', album.albumArtUrl);
-            albumSongList.innerHTML = '';
+    albumTitle.firstChild.nodeValue = album.title;
+    albumArtist.firstChild.nodeValue = album.artist;
+    albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
+    albumImage.setAttribute('src', album.albumArtUrl);
+    albumSongList.innerHTML = '';
 
 
-            for (var i = 0; i < album.songs.length; i++) {
-                albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
-            }
-        };
+    for (var i = 0; i < album.songs.length; i++) {
+        albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+    }
+};
 
-        window.onload = function () {
-            setCurrentAlbum(albumMarconi);
-            var albums = [albumPicasso, albumMarconi, albumMozart];
-            var index = 1;
+var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
+var songRows = document.getElementsByClassName('album-view-song-item');
+var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 
-            albumImage.addEventListener("click", function (event) {
+window.onload = function () {
+    setCurrentAlbum(albumMarconi);
 
-                setCurrentAlbum(albums[index]);
-                index++;
-                if (index == albums.length) {
-                    index = 0;
-                }
+    songListContainer.addEventListener('mouseover', function (event) {
+        if (event.target.parentElement.className === 'album-view-song-item') {
+            // Change the content from the number to the play button's HTML
+            event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+        }
+    });
+    for (var i = 0; i < songRows.length; i++) {
+        songRows[i].addEventListener('mouseleave', function (event) {
+            // Revert the content back to the number
+            this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
+        });
+    }
+    var albums = [albumPicasso, albumMarconi, albumMozart];
+    var index = 1;
 
-            });
-        };
+    albumImage.addEventListener("click", function (event) {
+
+        setCurrentAlbum(albums[index]);
+        index++;
+        if (index == albums.length) {
+            index = 0;
+        }
+
+    });
+};
