@@ -129,14 +129,13 @@ var findParentByClassName = function (element, targetClass) {
         var currentParent = element.parentElement;
         while (currentParent.className !== targetClass && currentParent.className !== null) {
             currentParent = currentParent.parentElement;
-        } 
-        
-        if (currentParent.parentElement == null && currentParent.className !== targetClass ) {
-            console.log("No parent found with that class name")
         }
-        
-        else if ( currentParent.className == targetClass) {
-        return currentParent;}
+
+        if (currentParent.parentElement == null && currentParent.className !== targetClass) {
+            console.log("No parent found with that class name")
+        } else if (currentParent.className == targetClass) {
+            return currentParent;
+        }
     }
 };
 
@@ -190,11 +189,11 @@ window.onload = function () {
         if (event.target.parentElement.className === 'album-view-song-item') {
             // Change the content from the number to the play button's HTML
             event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
-            
-            var songItem = getSongItem(event.target); 
-            
+
+            var songItem = getSongItem(event.target);
+
             if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
-                songItem.innerHTML = playButtonTemplate; 
+                songItem.innerHTML = playButtonTemplate;
             }
         }
     });
