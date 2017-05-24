@@ -63,6 +63,7 @@
      position: absolute;
      width: 100%;
      font-weight: 300;
+    float: left;
  }
  
 .player-bar .currently-playing .song-name,
