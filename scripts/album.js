@@ -70,7 +70,7 @@ var setCurrentAlbum = function (album) {
     $albumSongList.empty();
 
 
-    for (var i = 0; i < album.songs.length; i++) {
+    for (var i = 0; i < albums.songs.length; i++) {
         var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
         $albumSongList.append($newRow);
     }
@@ -78,6 +78,10 @@ var setCurrentAlbum = function (album) {
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
+
+var playerBarPlayButton = '<span class="ion-play"></span>';
+var playerBarPauseButton = '<span class="ion-pause"></span>';
+
 var currentAlbum = null;
 var currentlyPlayingSongNumber = null;
 var currentSongFromAlbum = null;
