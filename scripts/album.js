@@ -70,7 +70,7 @@ var setCurrentAlbum = function (album) {
     $albumSongList.empty();
 
 
-    for (var i = 0; i < albums.songs.length; i++) {
+    for (var i = 0; i < album.songs.length; i++) {
         var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
         $albumSongList.append($newRow);
     }
@@ -95,7 +95,7 @@ $(document).ready(function () {
 var albums = [albumPicasso, albumMarconi, albumMozart];
 var index = 1;
 
-albumImage.addEventListener("click", function (event) {
+$albumImage.click(function (event) {
 
     setCurrentAlbum(albums[index]);
     index++;
@@ -104,4 +104,4 @@ albumImage.addEventListener("click", function (event) {
     }
 
 });
-};
+
