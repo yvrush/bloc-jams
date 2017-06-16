@@ -16,6 +16,7 @@ var buildCollectionItemTemplate = function() {
 
     return $(template);
  };
+
 $(window).load(function() {
     // #1
     var $collectionContainer = $('.album-covers');
@@ -27,4 +28,4 @@ $(window).load(function() {
         var $newThumbnail = buildCollectionItemTemplate();
         $collectionContainer.append($newThumbnail);
     }
-}
+};
