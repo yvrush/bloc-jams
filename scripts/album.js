@@ -202,10 +202,11 @@ var $nextButton = $('.main-controls .next');
 
 $(document).ready(function () {
 
-    setCurrentAlbum(albumMarconi);
+    setCurrentAlbum(albumPicasso);
     $previousButton.click(previousSong);
     $nextButton.click(nextSong);
-
+    $playPause.click(togglePlayFromPlayerBar);
+    
 });
 var albums = [albumPicasso, albumMarconi, albumMozart];
 var index = 1;
