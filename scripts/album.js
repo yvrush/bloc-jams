@@ -14,6 +14,26 @@ var setSong = function (songNumber) {
     setVolume(currentVolume);
 };
 
+var setCurrentTimeInPlayerBar = function (currentTime) {
+    $('.current-time').text(filterTimeCode(currentTime));
+
+};
+
+
+var setTotalTimeInPlayerBar = function (totalTime) {
+    $('.total-time').text(filterTimeCode(totalTime));
+
+};
+
+var filterTimeCode = function (timeInSeconds) {
+    var minutes = Math.floor(timeInSeconds / 60);
+    var seconds = Math.floor(timeInSeconds % 60);
+    if (seconds < 10) {
+        seconds = "0" + seconds
+    };
+    return minutes + ":" + seconds;
+
+};
 var updateSeekBarWhileSongPlays = function () {
     if (currentSoundFile) {
         // #10
@@ -21,7 +41,7 @@ var updateSeekBarWhileSongPlays = function () {
             // #11
             var seekBarFillRatio = this.getTime() / this.getDuration();
             var $seekBar = $('.seek-control .seek-bar');
-
+            setCurrentTimeInPlayerBar(this.getTime());
             updateSeekPercentage($seekBar, seekBarFillRatio);
         });
     }
@@ -86,14 +106,29 @@ var setVolume = function (volume) {
 };
 
 var togglePlayFromPlayerBar = function () {
+    if (currentlyPlayingSongNumber === null) {
+        setSong(1);
+        $(this).html(playerBarPauseButton);
+        getSongNumberCell(currentlyPlayingSongNumber).html(pauseButtonTemplate);
+      
+        updateSeekBarWhileSongPlays();
+        currentSongFromAlbum = currentAlbum.songs[currentlyPlayingSongNumber-1];
+        var $volumeFill = $('.volume .fill');
+        var $volumeThumb = $('.volume .thumb');
+        $volumeFill.width(currentVolume + '%');
+        $volumeThumb.css({
+            left: currentVolume + '%'
+        });
+        updatePlayerBarSong();
 
+    };
     if (currentSoundFile.isPaused()) {
-        +$(this).html(playerBarPauseButton); +
-        getSongNumberCell(currentlyPlayingSongNumber).html(pauseButtonTemplate); +
+        $(this).html(playerBarPauseButton);
+        getSongNumberCell(currentlyPlayingSongNumber).html(pauseButtonTemplate);
         currentSoundFile.play();
     } else {
-        +$(this).html(playerBarPlayButton); +
-        getSongNumberCell(currentlyPlayingSongNumber).html(playButtonTemplate); +
+        $(this).html(playerBarPlayButton);
+        getSongNumberCell(currentlyPlayingSongNumber).html(playButtonTemplate);
         currentSoundFile.pause();
     }
 
@@ -112,7 +147,7 @@ var createSongRow = function (songNumber, songName, songLength) {
         '<tr class="album-view-song-item">' +
         '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>' +
         '  <td class="song-item-title">' + songName + '</td>' +
-        '  <td class="song-item-duration">' + songLength + '</td>' +
+        '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>' +
         '</tr>';
 
     var $row = $(template);
@@ -143,13 +178,13 @@ var createSongRow = function (songNumber, songName, songLength) {
 
         } else if (currentlyPlayingSongNumber === songNumber) {
             if (currentSoundFile.isPaused()) {
-                +$(this).html(pauseButtonTemplate); +
-                $('.main-controls .play-pause').html(playerBarPauseButton); +
+                $(this).html(pauseButtonTemplate);
+                $('.main-controls .play-pause').html(playerBarPauseButton);
                 currentSoundFile.play();
                 updateSeekBarWhileSongPlays()
             } else {
-                +$(this).html(playButtonTemplate); +
-                $('.main-controls .play-pause').html(playerBarPlayButton); +
+                $(this).html(playButtonTemplate);
+                $('.main-controls .play-pause').html(playerBarPlayButton);
                 currentSoundFile.pause();
             }
         }
@@ -228,6 +263,7 @@ var updatePlayerBarSong = function () {
     $('.currently-playing .artist-name').text(currentAlbum.artist);
     $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
     $('.main-controls .play-pause').html(playerBarPauseButton);
+    setTotalTimeInPlayerBar(currentSongFromAlbum.duration);
 
 };
 
